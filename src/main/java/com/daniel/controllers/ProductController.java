@@ -2,8 +2,10 @@ package com.daniel.controllers;
 
 import com.daniel.dao.interfaces.CountryDao;
 import com.daniel.dao.interfaces.ShopDao;
-import com.daniel.dto.CountryDto;
-import com.daniel.dto.ShopDto;
+import com.daniel.domain.enums.EGuarantee;
+import com.daniel.dto.CategoryDto;
+import com.daniel.dto.ProducerDto;
+import com.daniel.dto.ProductDto;
 import com.daniel.exceptions.CustomException;
 import com.daniel.service.MyService;
 import org.springframework.stereotype.Controller;
@@ -16,33 +18,34 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.EnumSet;
 import java.util.List;
 
 @Controller
 public class ProductController {
 
     private MyService myService;
-    private ShopDao shopDao;
-    private CountryDao countryDao;
+
 
     public ProductController(MyService myService, ShopDao shopDao, CountryDao countryDao) {
         this.myService = myService;
-        this.shopDao = shopDao;
-        this.countryDao = countryDao;
     }
 
-    @RequestMapping(value = "/shop", method = RequestMethod.GET)
+    @RequestMapping(value = "/product", method = RequestMethod.GET)
     public String formGet(Model m) {
-        ShopDto shopDto = new ShopDto();
-        m.addAttribute("shop", shopDto);
-        List<CountryDto> countryList = myService.getAllCountries();
-        m.addAttribute("countryList", countryList);
+        ProductDto productDto = new ProductDto();
+        m.addAttribute("product", productDto);
+        List<CategoryDto> categoryList = myService.getAllCategories();
+        m.addAttribute("categoryList", categoryList);
+        List<ProducerDto> producerList = myService.getAllProducers();
+        m.addAttribute("producerList", producerList);
+        //todo enums
 
-        return "shop";
+        return "product";
     }
 
-    @RequestMapping(value = "/shop", method = RequestMethod.POST)
-    public String formPost(@Valid @ModelAttribute ShopDto shop, BindingResult result, Model m, HttpServletRequest request) {
+    @RequestMapping(value = "/product", method = RequestMethod.POST)
+    public String formPost(@Valid @ModelAttribute ProductDto product, BindingResult result, Model m, HttpServletRequest request) {
         if (result.hasErrors())
         {
 
@@ -52,16 +55,20 @@ public class ProductController {
                 throw new CustomException(error.getObjectName(), error.getDefaultMessage());
             }
 
-            return "shop";
+            return "product";
         }
 
-        myService.addShop(shop);
+        myService.addProduct(product);
 
-        ShopDto shopDto = new ShopDto();
-        m.addAttribute("shop", shopDto);
-        List<CountryDto> countryList = myService.getAllCountries();
-        m.addAttribute("countryList", countryList);
+        ProductDto productDto = new ProductDto();
+        m.addAttribute("product", productDto);
+        List<CategoryDto> categoryList = myService.getAllCategories();
+        m.addAttribute("categoryList", categoryList);
+        List<ProducerDto> producerList = myService.getAllProducers();
+        m.addAttribute("producerList", producerList);
+        EnumSet<EGuarantee> guaranteeList = EnumSet.allOf(EGuarantee.class);
+        m.addAttribute("guaranteeList", guaranteeList);
 
-        return "shop";
+        return "product";
     }
 }

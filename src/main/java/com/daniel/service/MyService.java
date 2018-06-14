@@ -15,4 +15,7 @@ public interface MyService {
     List<ShopDto> getAllShops();
     List<TradeDto> getAllTrades();
     ProducerDto addProducer(ProducerDto producerDto);
+    List<ProducerDto> getAllProducers();
+    ProductDto addProduct(ProductDto productDto);
+    List<CategoryDto> getAllCategories();
 }

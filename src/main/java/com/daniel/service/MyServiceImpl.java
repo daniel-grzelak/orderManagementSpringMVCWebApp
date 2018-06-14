@@ -24,8 +24,9 @@ public class MyServiceImpl implements MyService {
     private CountryDao countryDao;
     private TradeDao tradeDao;
     private MyMapper myMapper;
+    private CategoryDao categoryDao;
 
-    public MyServiceImpl(ProducerDao producerDao, CustomerDao customerDao, ProductDao productDao, Customer_OrderDao customer_OrderDao, ShopDao shopDao, StockDao stockDao, CountryDao countryDao, TradeDao tradeDao, MyMapper myMapper) {
+    public MyServiceImpl(ProducerDao producerDao, CustomerDao customerDao, ProductDao productDao, Customer_OrderDao customer_OrderDao, ShopDao shopDao, StockDao stockDao, CountryDao countryDao, TradeDao tradeDao, MyMapper myMapper, CategoryDao categoryDao) {
         this.producerDao = producerDao;
         this.customerDao = customerDao;
         this.productDao = productDao;
@@ -35,6 +36,7 @@ public class MyServiceImpl implements MyService {
         this.countryDao = countryDao;
         this.tradeDao = tradeDao;
         this.myMapper = myMapper;
+        this.categoryDao = categoryDao;
     }
 
     @Override
@@ -117,6 +119,35 @@ public class MyServiceImpl implements MyService {
             return myMapper.fromProducerToProducerDto(producerDao.add(producer));
         } catch (Exception e) {
             throw new CustomException("service", "Can't add producer.");
+        }
+    }
+
+    @Override
+    public List<ProducerDto> getAllProducers() {
+
+        try {
+            return producerDao.getAll().stream().map(myMapper::fromProducerToProducerDto).collect(Collectors.toList());
+        } catch (Exception e) {
+            throw new CustomException("service", "Can't download producers.");
+        }
+    }
+
+    @Override
+    public ProductDto addProduct(ProductDto productDto) {
+        try {
+            Product product = myMapper.fromProductDtoToProduct(productDto);
+            return myMapper.fromProductToProductDto(productDao.add(product));
+        } catch (Exception e) {
+            throw new CustomException("service", "Can't add product.");
+        }
+    }
+
+    @Override
+    public List<CategoryDto> getAllCategories() {
+        try {
+            return categoryDao.getAll().stream().map(myMapper::fromCategoryToCategoryDto).collect(Collectors.toList());
+        } catch (Exception e) {
+            throw new CustomException("service", "Can't download categories.");
         }
     }
 
