@@ -160,5 +160,25 @@ public class MyServiceImpl implements MyService {
         }
     }
 
+    @Override
+    public StockDto addStock(StockDto stockDto) {
+        try {
+            Stock stock = myMapper.fromStockDtoToStock(stockDto);
+            return myMapper.fromStockToStockDto(stockDao.add(stock));
+        } catch (Exception e) {
+            throw new CustomException("service", "Can't add stock.");
+        }
+    }
+
+    @Override
+    public Customer_OrderDto addCustomerOrder(Customer_OrderDto customerOrderDto) {
+        try {
+            Customer_Order customerOrder = myMapper.fromCustomer_OrderDtoToCustomer_Order(customerOrderDto);
+            return myMapper.fromCustomer_OrderToCustomer_OrderDto(customer_OrderDao.add(customerOrder));
+        } catch (Exception e) {
+            throw new CustomException("service", "Can't add order.");
+        }
+    }
+
 
 }

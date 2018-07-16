@@ -19,4 +19,6 @@ public interface MyService {
     ProductDto addProduct(ProductDto productDto);
     List<CategoryDto> getAllCategories();
     List<ProductDto> getAllProducts();
+    StockDto addStock(StockDto stockDto);
+    Customer_OrderDto addCustomerOrder(Customer_OrderDto customerOrderDto);
 }

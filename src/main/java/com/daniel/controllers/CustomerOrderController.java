@@ -1,8 +1,9 @@
 package com.daniel.controllers;
 
+import com.daniel.domain.enums.EPayment;
+import com.daniel.dto.CustomerDto;
+import com.daniel.dto.Customer_OrderDto;
 import com.daniel.dto.ProductDto;
-import com.daniel.dto.ShopDto;
-import com.daniel.dto.StockDto;
 import com.daniel.exceptions.CustomException;
 import com.daniel.service.MyService;
 import org.springframework.stereotype.Controller;
@@ -18,29 +19,30 @@ import javax.validation.Valid;
 import java.util.List;
 
 @Controller
-public class StockController {
+public class CustomerOrderController {
 
     private MyService myService;
 
 
-    public StockController(MyService myService) {
+    public CustomerOrderController(MyService myService) {
         this.myService = myService;
-
     }
 
-    @RequestMapping(value = "/stock", method = RequestMethod.GET)
+    @RequestMapping(value = "/customerOrder", method = RequestMethod.GET)
     public String formGet(Model m) {
-        StockDto stockDto = new StockDto();
-        m.addAttribute("stock", stockDto);
+        Customer_OrderDto customerOrderDto = new Customer_OrderDto();
+        m.addAttribute("customerOrder", customerOrderDto);
+        List<CustomerDto> customerList = myService.getAllCustomers();
+        m.addAttribute("customerList", customerList);
         List<ProductDto> productList = myService.getAllProducts();
         m.addAttribute("productList", productList);
-        List<ShopDto> shopList = myService.getAllShops();
-        m.addAttribute("shopList", shopList);
-        return "stock";
+        m.addAttribute("payments", EPayment.values());
+
+        return "customerOrder";
     }
 
-    @RequestMapping(value = "/stock", method = RequestMethod.POST)
-    public String formPost(@Valid @ModelAttribute StockDto stock, BindingResult result, Model m, HttpServletRequest request) {
+    @RequestMapping(value = "/customerOrder", method = RequestMethod.POST)
+    public String formPost(@Valid @ModelAttribute Customer_OrderDto customerOrder, BindingResult result, Model m, HttpServletRequest request) {
         if (result.hasErrors())
         {
 
@@ -50,18 +52,19 @@ public class StockController {
                 throw new CustomException(error.getObjectName(), error.getDefaultMessage());
             }
 
-            return "stock";
+            return "customerOrder";
         }
 
-        myService.addStock(stock);
+        myService.addCustomerOrder(customerOrder);
 
-        StockDto stockDto = new StockDto();
-        m.addAttribute("stock", stockDto);
+        Customer_OrderDto customerOrderDto = new Customer_OrderDto();
+        m.addAttribute("customerOrder", customerOrderDto);
+        List<CustomerDto> customerList = myService.getAllCustomers();
+        m.addAttribute("customerList", customerList);
         List<ProductDto> productList = myService.getAllProducts();
         m.addAttribute("productList", productList);
-        List<ShopDto> shopList = myService.getAllShops();
-        m.addAttribute("shopList", shopList);
+        m.addAttribute("payments", EPayment.values());
 
-        return "stock";
+        return "customerOrder";
     }
 }

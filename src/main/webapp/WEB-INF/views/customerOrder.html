@@ -32,16 +32,29 @@
 </div>
 
 
-<div id="Stock" class="tabcontent">
+<div id="customerOrder" class="tabcontent">
     <div class="container">
         <div class="row">
             <div class="col-md-4">
                 <div class="col-md-12 form">
-                    <h3>Add Stock:</h3>
-                    <form th:action="@{/stock}" th:object="${stock}" method="post">
+                    <h3>Add customer order:</h3>
+                    <form th:action="@{/customerOrder}" th:object="${customerOrder}" method="post">
+                        <div class="form-group">
+                            <label for="discount">Discount</label>
+                            <input id="discount" class="form-control" type="number" min="0" max="1" th:field="*{discount}"/>
+                        </div>
                         <div class="form-group">
                             <label for="quantity">Quantity</label>
-                            <input id="quantity" class="form-control" type="number" min="0" th:field="*{quantity}"/>
+                            <input id="quantity" class="form-control" type="number" min="1" th:field="*{quantity}"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="customer">Customer</label>
+                            <select th:field="*{customerDto.id}" id="customer">
+                                <option th:each="customer : ${customerList}"
+                                        th:value="${customer.id}"
+                                        th:text="${customer.name}">
+                                </option>
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="product">Product</label>
@@ -53,11 +66,11 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="Shop">Shop</label>
-                            <select th:field="*{shopDto.id}" id="shop">
-                                <option th:each="shop : ${shopList}"
-                                        th:value="${shop.id}"
-                                        th:text="${shop.name + ' ' + shop.getCountryDto().getName()}">
+                            <label for="payment">Payment type</label>
+                            <select th:field="*{paymentDto.id}" id="payment">
+                                <option th:each="payment : ${payments}"
+                                        th:value="${payment}"
+                                        th:text="${payment.toString()}">
                                 </option>
                             </select>
                         </div>
