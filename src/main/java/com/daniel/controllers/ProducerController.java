@@ -29,11 +29,9 @@ public class ProducerController {
     private TradeDao tradeDao;
 
 
-    public ProducerController(MyService myService, ProducerDao producerDao, CountryDao countryDao, TradeDao tradeDao) {
+    public ProducerController(MyService myService) {
         this.myService = myService;
-        this.producerDao = producerDao;
-        this.countryDao = countryDao;
-        this.tradeDao = tradeDao;
+
     }
 
     @RequestMapping(value = "/producer", method = RequestMethod.GET)

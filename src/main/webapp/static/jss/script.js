@@ -1,18 +1,52 @@
-const tabs = ['Customer', 'Shop', 'Producer'];
-const tabDefaultClass = 'tablinks';
+function sortTable(n) {
+    var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+    table = document.getElementById("table");
+    switching = true;
+    dir = "asc";
+    while (switching) {
+        switching = false;
+        rows = table.getElementsByTagName("TR");
+        for (i = 1; i < (rows.length - 1); i++) {
+            shouldSwitch = false;
+            x = rows[i].getElementsByTagName("TD")[n];
+            y = rows[i + 1].getElementsByTagName("TD")[n];
+            if (dir == "asc") {
+                if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                    shouldSwitch = true;
+                    break;
+                }
+            } else if (dir == "desc") {
+                if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                    shouldSwitch = true;
+                    break;
+                }
+            }
+        }
+        if (shouldSwitch) {
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
+            switchcount++;
+        } else {
+            if (switchcount == 0 && dir == "asc") {
+                dir = "desc";
+                switching = true;
+            }
+        }
+    }
 
-let tabElements = tabs.map(t => document.getElementById(t + "Tab"));
-let blockElements = tabs.map(t => document.getElementById(t));
 
-tabElements.forEach(t => t.className.replace(" active", ""));
-blockElements.forEach(t => t.style.display = 'none');
+}
 
-tabElements.forEach(t => {
-    t.addEventListener('click', function () {
-        tabElements.forEach(t => t.className = tabDefaultClass);
-        blockElements.forEach(t => t.style.display = 'none');
+var $rows = $('#table tbody tr');
+$('#search').keyup(function () {
 
-        t.className += " active";
-        blockElements[tabElements.indexOf(document.getElementById(t.id))].style.display = 'block';
-    })
-}, false);
+    var val = '^(?=.*\\b' + $.trim($(this).val()).split(/\s+/).join('\\b)(?=.*\\b') + ').*$',
+        reg = RegExp(val, 'i'),
+        text;
+
+    $rows.show().filter(function () {
+        text = $(this).text().replace(/\s+/g, ' ');
+        return !reg.test(text);
+    }).hide();
+});
+

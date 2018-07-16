@@ -67,7 +67,7 @@
                         </div>
                         <div class="form-group">
                             <label for="payment">Payment type</label>
-                            <select th:field="*{paymentDto.id}" id="payment">
+                            <select th:field="*{paymentDto.payment}" id="payment">
                                 <option th:each="payment : ${payments}"
                                         th:value="${payment}"
                                         th:text="${payment.toString()}">

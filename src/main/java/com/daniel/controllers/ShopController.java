@@ -25,10 +25,9 @@ public class ShopController {
     private ShopDao shopDao;
     private CountryDao countryDao;
 
-    public ShopController(MyService myService, ShopDao shopDao, CountryDao countryDao) {
+    public ShopController(MyService myService) {
         this.myService = myService;
-        this.shopDao = shopDao;
-        this.countryDao = countryDao;
+
     }
 
     @RequestMapping(value = "/shop", method = RequestMethod.GET)

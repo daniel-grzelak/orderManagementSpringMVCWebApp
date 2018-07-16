@@ -51,10 +51,9 @@ public class MyServiceImpl implements MyService {
     @Override
     public CustomerDto addCustomer(CustomerDto customerDto) {
         try {
-
             Customer customer = myMapper.fromCustomerDtoToCustomer(customerDto);
             List<CustomerDto> customerDtosFromDb = getAllCustomers();
-            System.out.println(customerDtosFromDb.stream().filter(customerDto1 ->  new Long(customerDto1.getCountryDto().getId()).equals(new Long(customerDto.getCountryDto().getId()))).findAny().get());
+            System.out.println(customerDtosFromDb.stream().filter(customerDto1 -> new Long(customerDto1.getCountryDto().getId()).equals(new Long(customerDto.getCountryDto().getId()))).findAny().get());
             if (customerDtosFromDb.stream().filter(customerDto1 -> customerDto1.getName().matches(customerDto.getName()) && customerDto1.getSurname().matches(customerDto.getSurname()) && new Long(customerDto1.getCountryDto().getId()).equals(new Long(customerDto.getCountryDto().getId()))).findAny().equals(Optional.empty())) {
                 return myMapper.fromCustomerToCustomerDto(customerDao.add(customer));
             } else {
@@ -88,7 +87,12 @@ public class MyServiceImpl implements MyService {
     public ShopDto addShop(ShopDto shopDto) {
         try {
             Shop shop = myMapper.fromShopDtoToShop(shopDto);
-            return myMapper.fromShopToShopDto(shopDao.add(shop));
+            List<ShopDto> shopDtosFromDb = getAllShops();
+            if (shopDtosFromDb.stream().filter(shopDto1 -> shopDto1.getName().matches(shopDto.getName()) && new Long(shopDto1.getCountryDto().getId()).equals(new Long(shopDto.getCountryDto().getId()))).findAny().equals(Optional.empty())) {
+                return myMapper.fromShopToShopDto(shopDao.add(shop));
+            } else {
+                throw new Exception();
+            }
         } catch (Exception e) {
             throw new CustomException("service", "Can't add shop.");
         }
@@ -116,9 +120,14 @@ public class MyServiceImpl implements MyService {
     public ProducerDto addProducer(ProducerDto producerDto) {
         try {
             Producer producer = myMapper.fromProducerDtoToProducer(producerDto);
-            return myMapper.fromProducerToProducerDto(producerDao.add(producer));
+            List<ProducerDto> producerDtosFromDb = getAllProducers();
+            if (producerDtosFromDb.stream().filter(producerDto1 -> producerDto1.getName().matches(producerDto.getName()) && new Long(producerDto1.getCountryDto().getId()).equals(new Long(producerDto.getCountryDto().getId()))).findAny().equals(Optional.empty())) {
+                return myMapper.fromProducerToProducerDto(producerDao.add(producer));
+            } else {
+                throw new Exception();
+            }
         } catch (Exception e) {
-            throw new CustomException("service", "Can't add producer.");
+            throw new CustomException("producer", "Such producer already exists.");
         }
     }
 
@@ -136,9 +145,14 @@ public class MyServiceImpl implements MyService {
     public ProductDto addProduct(ProductDto productDto) {
         try {
             Product product = myMapper.fromProductDtoToProduct(productDto);
-            return myMapper.fromProductToProductDto(productDao.add(product));
+            List<ProductDto> productDtosFromDb = getAllProducts();
+            if (productDtosFromDb.stream().filter(productDto1 -> productDto1.getName().matches(productDto.getName()) && new Long(productDto1.getCategoryDto().getId()).equals(new Long(productDto.getCategoryDto().getId())) && new Long(productDto1.getProducerDto().getId()).equals(new Long(productDto.getProducerDto().getId()))).findAny().equals(Optional.empty())) {
+                return myMapper.fromProductToProductDto(productDao.add(product));
+            } else {
+                throw new Exception();
+            }
         } catch (Exception e) {
-            throw new CustomException("service", "Can't add product.");
+            throw new CustomException("product", "Such product already exists.");
         }
     }
 
@@ -164,11 +178,21 @@ public class MyServiceImpl implements MyService {
     public StockDto addStock(StockDto stockDto) {
         try {
             Stock stock = myMapper.fromStockDtoToStock(stockDto);
-            return myMapper.fromStockToStockDto(stockDao.add(stock));
+            List<StockDto> stockDtosFromDb = getAllStocks();
+            Optional<StockDto> sameStockDto = stockDtosFromDb.stream().filter(stockDto1 -> new Long(stockDto1.getProductDto().getId()).equals(new Long(stockDto.getProductDto().getId())) && new Long(stockDto1.getShopDto().getId()).equals(new Long(stockDto.getShopDto().getId()))).findAny();
+            if (!sameStockDto.equals(Optional.empty())) {
+                Stock sameStock = myMapper.fromStockDtoToStock(sameStockDto.get());
+                sameStock.setQuantity(sameStock.getQuantity() + stock.getQuantity());
+                //todo nie chce mi zupdateowac, przy nowym stocku rzuca duplikat sklepu, przy starym nic
+                return myMapper.fromStockToStockDto(stockDao.modify(sameStock));
+            } else {
+                return myMapper.fromStockToStockDto(stockDao.add(stock));
+            }
         } catch (Exception e) {
             throw new CustomException("service", "Can't add stock.");
         }
     }
+
 
     @Override
     public Customer_OrderDto addCustomerOrder(Customer_OrderDto customerOrderDto) {
@@ -177,6 +201,15 @@ public class MyServiceImpl implements MyService {
             return myMapper.fromCustomer_OrderToCustomer_OrderDto(customer_OrderDao.add(customerOrder));
         } catch (Exception e) {
             throw new CustomException("service", "Can't add order.");
+        }
+    }
+
+    @Override
+    public List<StockDto> getAllStocks() {
+        try {
+            return stockDao.getAll().stream().map(myMapper::fromStockToStockDto).collect(Collectors.toList());
+        } catch (Exception e) {
+            throw new CustomException("service", "Can't download stocks.");
         }
     }
 

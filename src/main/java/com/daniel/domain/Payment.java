@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -23,6 +24,22 @@ public class Payment {
     @Column(unique = true)
     @Enumerated(EnumType.STRING)
     private EPayment payment;
-    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "payment")
+    @OneToMany(cascade = CascadeType.MERGE, mappedBy = "payment")
     private Set<Customer_Order> customer_orders = new HashSet<>();
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Payment payment1 = (Payment) o;
+        return Objects.equals(id, payment1.id) &&
+                payment == payment1.payment &&
+                Objects.equals(customer_orders, payment1.customer_orders);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, payment, customer_orders);
+    }
 }

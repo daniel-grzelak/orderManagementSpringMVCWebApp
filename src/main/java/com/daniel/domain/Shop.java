@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -23,6 +24,23 @@ public class Shop {
     @ManyToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "country_id")
     private Country country;
-    @OneToMany(mappedBy = "shop")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "shop")
     private Set<Stock> stocks = new HashSet<>();
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Shop shop = (Shop) o;
+        return Objects.equals(id, shop.id) &&
+                Objects.equals(name, shop.name) &&
+                Objects.equals(country, shop.country) &&
+                Objects.equals(stocks, shop.stocks);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, name, country, stocks);
+    }
 }

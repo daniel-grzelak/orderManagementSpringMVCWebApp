@@ -24,13 +24,13 @@ public class Customer_Order {
     private LocalDateTime date;
     private BigDecimal discount;
     private Integer quantity;
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE})
     @JoinColumn(name = "customer_id", unique = true)
     private Customer customer;
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "payment_id", unique = true)
     private Payment payment;
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE})
     @JoinColumn(name = "product_id")
     private Product product;
 

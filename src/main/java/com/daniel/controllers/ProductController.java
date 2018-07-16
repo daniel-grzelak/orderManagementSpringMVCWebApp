@@ -1,7 +1,5 @@
 package com.daniel.controllers;
 
-import com.daniel.dao.interfaces.CountryDao;
-import com.daniel.dao.interfaces.ShopDao;
 import com.daniel.domain.enums.EGuarantee;
 import com.daniel.dto.CategoryDto;
 import com.daniel.dto.ProducerDto;
@@ -27,7 +25,7 @@ public class ProductController {
     private MyService myService;
 
 
-    public ProductController(MyService myService, ShopDao shopDao, CountryDao countryDao) {
+    public ProductController(MyService myService) {
         this.myService = myService;
     }
 
@@ -40,7 +38,8 @@ public class ProductController {
         List<ProducerDto> producerList = myService.getAllProducers();
         m.addAttribute("producerList", producerList);
         m.addAttribute("guarantees", EGuarantee.values());
-
+        List<ProductDto> productDtos = myService.getAllProducts();
+        m.addAttribute("productDtos", productDtos);
         return "product";
     }
 
@@ -68,6 +67,8 @@ public class ProductController {
         m.addAttribute("producerList", producerList);
         EnumSet<EGuarantee> guaranteeList = EnumSet.allOf(EGuarantee.class);
         m.addAttribute("guaranteeList", guaranteeList);
+        List<ProductDto> productDtos = myService.getAllProducts();
+        m.addAttribute("productDtos", productDtos);
 
         return "product";
     }

@@ -26,11 +26,8 @@ public class CustomerController {
     private CountryDao countryDao;
 
 
-
-    public CustomerController(MyService myService, CustomerDao customerDao, CountryDao countryDao) {
+    public CustomerController(MyService myService) {
         this.myService = myService;
-        this.customerDao = customerDao;
-        this.countryDao = countryDao;
         }
 
 

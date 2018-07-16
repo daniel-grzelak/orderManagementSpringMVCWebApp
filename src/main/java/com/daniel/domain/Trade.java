@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -25,5 +26,19 @@ public class Trade {
     @OneToMany(mappedBy = "trade")
     private Set<Producer> producers = new HashSet<>();
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Trade trade = (Trade) o;
+        return Objects.equals(id, trade.id) &&
+                Objects.equals(name, trade.name) &&
+                Objects.equals(producers, trade.producers);
+    }
 
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, name, producers);
+    }
 }
