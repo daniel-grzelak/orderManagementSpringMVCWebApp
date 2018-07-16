@@ -151,5 +151,14 @@ public class MyServiceImpl implements MyService {
         }
     }
 
+    @Override
+    public List<ProductDto> getAllProducts() {
+        try {
+            return productDao.getAll().stream().map(myMapper::fromProductToProductDto).collect(Collectors.toList());
+        } catch (Exception e) {
+            throw new CustomException("service", "Can't download products.");
+        }
+    }
+
 
 }

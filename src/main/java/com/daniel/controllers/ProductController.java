@@ -39,7 +39,7 @@ public class ProductController {
         m.addAttribute("categoryList", categoryList);
         List<ProducerDto> producerList = myService.getAllProducers();
         m.addAttribute("producerList", producerList);
-        //todo enums
+        m.addAttribute("guarantees", EGuarantee.values());
 
         return "product";
     }

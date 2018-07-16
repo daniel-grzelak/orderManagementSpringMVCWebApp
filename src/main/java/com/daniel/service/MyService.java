@@ -18,4 +18,5 @@ public interface MyService {
     List<ProducerDto> getAllProducers();
     ProductDto addProduct(ProductDto productDto);
     List<CategoryDto> getAllCategories();
+    List<ProductDto> getAllProducts();
 }

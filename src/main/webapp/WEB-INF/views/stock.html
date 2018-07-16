@@ -32,47 +32,34 @@
 </div>
 
 
-<div id="Product" class="tabcontent">
+<div id="Stock" class="tabcontent">
     <div class="container">
         <div class="row">
             <div class="col-md-4">
                 <div class="col-md-12 form">
-                    <h3>Add product:</h3>
-                    <form th:action="@{/product}" th:object="${product}" method="post">
+                    <h3>Add Stock:</h3>
+                    <form th:action="@{/stock}" th:object="${stock}" method="post">
                         <div class="form-group">
-                            <label for="name">Name</label>
-                            <input id="name" class="form-control" type="text" th:field="*{name}"/>
+                            <label for="quantity">Quantity</label>
+                            <input id="quantity" class="form-control" type="text" th:field="*{quantity}"/>
                         </div>
                         <div class="form-group">
-                            <label for="price">Price</label>
-                            <input id="price" class="form-control" type="text" th:field="*{price}"/>
-                        </div>
-                        <div class="form-group">
-                            <label for="category">Category</label>
-                            <select th:field="*{categoryDto.id}" id="category">
-                                <option th:each="category: ${categoryList}"
-                                        th:value="${category.id}"
-                                        th:text="${category.name}">
+                            <label for="product">Product</label>
+                            <select th:field="*{productDto.id}" id="product">
+                                <option th:each="product : ${productList}"
+                                        th:value="${product.id}"
+                                        th:text="${product.name}">
                                 </option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="producer">Producer</label>
-                            <select th:field="*{producerDto.id}" id="producer">
-                                <option th:each="producer : ${producerList}"
-                                        th:value="${producer.id}"
-                                        th:text="${producer.name}">
+                            <label for="Shop">Shop</label>
+                            <select th:field="*{shopDto.id}" id="shop">
+                                <option th:each="shop : ${shopList}"
+                                        th:value="${shop.id}"
+                                        th:text="${shop.name}">
                                 </option>
                             </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="guarantee">Guarantees</label>
-                            <ul class="list-unstyled" id="guarantee">
-                                <li  th:each="g : ${guarantees}">
-                                    <input type="checkbox" th:field="*{guarantee_components}" th:value="${g}"/>
-                                    <label th:text="${g}"></label>
-                                </li>
-                            </ul>
                         </div>
                         <div class="form-group">
                             <input class="btn btn-success" type="submit" value="SEND"/>
