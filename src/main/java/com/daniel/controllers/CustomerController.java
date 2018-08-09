@@ -1,9 +1,8 @@
 package com.daniel.controllers;
 
-import com.daniel.dao.interfaces.CountryDao;
-import com.daniel.dao.interfaces.CustomerDao;
 import com.daniel.dto.CountryDto;
 import com.daniel.dto.CustomerDto;
+import com.daniel.dto.CustomerOrderDto;
 import com.daniel.exceptions.CustomException;
 import com.daniel.service.MyService;
 import org.springframework.stereotype.Controller;
@@ -17,13 +16,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class CustomerController {
 
     private MyService myService;
-    private CustomerDao customerDao;
-    private CountryDao countryDao;
+
 
 
     public CustomerController(MyService myService) {
@@ -39,7 +38,11 @@ public class CustomerController {
         m.addAttribute("customer", customerDto);
         List<CountryDto> countryList = myService.getAllCountries();
         m.addAttribute("countryList", countryList);
-
+        List<CustomerDto> customerDtos = myService.getAllCustomers();
+        customerDtos
+                .forEach(c -> c.setCustomerOrderDtos(myService.getAllCustomerOrdersForCustomerDto(c).stream().map(id -> CustomerOrderDto.builder().id(id).build())
+                        .collect(Collectors.toList())));
+        m.addAttribute("customerDtos", customerDtos);
         return "customer";
     }
 
@@ -63,6 +66,11 @@ public class CustomerController {
         m.addAttribute("customer", customerDto);
         List<CountryDto> countryList = myService.getAllCountries();
         m.addAttribute("countryList", countryList);
+        List<CustomerDto> customerDtos = myService.getAllCustomers();
+        customerDtos
+                .forEach(c -> c.setCustomerOrderDtos(myService.getAllCustomerOrdersForCustomerDto(c).stream().map(id -> CustomerOrderDto.builder().id(id).build())
+                        .collect(Collectors.toList())));
+        m.addAttribute("customerDtos", customerDtos);
 
         return "customer";
     }

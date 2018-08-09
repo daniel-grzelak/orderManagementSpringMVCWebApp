@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.EnumSet;
 import java.util.List;
 
 @Controller
@@ -65,8 +64,7 @@ public class ProductController {
         m.addAttribute("categoryList", categoryList);
         List<ProducerDto> producerList = myService.getAllProducers();
         m.addAttribute("producerList", producerList);
-        EnumSet<EGuarantee> guaranteeList = EnumSet.allOf(EGuarantee.class);
-        m.addAttribute("guaranteeList", guaranteeList);
+        m.addAttribute("guarantees", EGuarantee.values());
         List<ProductDto> productDtos = myService.getAllProducts();
         m.addAttribute("productDtos", productDtos);
 

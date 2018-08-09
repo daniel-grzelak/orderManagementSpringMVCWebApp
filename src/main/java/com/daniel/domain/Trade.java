@@ -32,13 +32,20 @@ public class Trade {
         if (o == null || getClass() != o.getClass()) return false;
         Trade trade = (Trade) o;
         return Objects.equals(id, trade.id) &&
-                Objects.equals(name, trade.name) &&
-                Objects.equals(producers, trade.producers);
+                Objects.equals(name, trade.name);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, name, producers);
+        return Objects.hash(id, name);
+    }
+
+    @Override
+    public String toString() {
+        return "Trade{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

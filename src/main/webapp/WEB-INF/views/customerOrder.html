@@ -27,17 +27,49 @@
         <button class="tablinks" id="StockTab">Stock</button>
     </form>
     <form action="/customerOrder">
-        <button class="tablinks" id="OrderTab">Customer order</button>
+        <button class="tablinks active" id="OrderTab">Customer order</button>
     </form>
 </div>
 
 
-<div id="customerOrder" class="tabcontent">
-    <div class="container">
+<div id="Customer order" class="tabcontent">
+    <div class="container-fluid">
         <div class="row">
+            <div class="col-md-7">
+                <div class="col-md-12 table">
+                    <input type="text" id="search" placeholder="Type to search">
+                    <h3>Table:</h3>
+                    <table class="table table-striped table-hover" id="table">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th onclick="sortTable(0)">Id</th>
+                            <th onclick="sortTable(1)">Product</th>
+                            <th onclick="sortTable(2)">Quantity</th>
+                            <th onclick="sortTable(3)">Discount</th>
+                            <th onclick="sortTable(4)">Customer</th>
+                            <th onclick="sortTable(5)">Price</th>
+                            <th onclick="sortTable(6)">Payment</th>
+                            <th onclick="sortTable(7)">Date</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="order : ${customerOrderDtos}">
+                            <td th:text="${order.id}"></td>
+                            <td th:text="${order.productDto.name}"></td>
+                            <td th:text="${order.quantity}"></td>
+                            <td th:text="${order.discount}"></td>
+                            <td th:text="${order.customerDto.name}"></td>
+                            <td th:text="${order.productDto.price * order.quantity}"></td>
+                            <td th:text="${order.paymentDto.payment}"></td>
+                            <td th:text="${order.date}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
             <div class="col-md-4">
                 <div class="col-md-12 form">
-                    <h3>Add customer order:</h3>
+                    <h3>Add order:</h3>
                     <form th:action="@{/customerOrder}" th:object="${customerOrder}" method="post">
                         <div class="form-group">
                             <label for="discount">Discount</label>
@@ -57,11 +89,11 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="product">Product</label>
-                            <select th:field="*{productDto.id}" id="product">
-                                <option th:each="product : ${productList}"
-                                        th:value="${product.id}"
-                                        th:text="${product.name}">
+                            <label for="stock">Product</label>
+                            <select th:field="*{stockDto.id}" id="stock">
+                                <option th:each="s : ${stockDtos}"
+                                        th:value="${s.id}"
+                                        th:text="${s.productDto.name + ' ' + s.shopDto.name}">
                                 </option>
                             </select>
                         </div>
@@ -79,12 +111,6 @@
                             <input class="btn btn-danger" type="reset" value="RESET"/>
                         </div>
                     </form>
-                </div>
-            </div>
-            <div class="col-md-8">
-                <div class="col-md-12 table">
-                    <h3>Table:</h3>
-
                 </div>
             </div>
         </div>

@@ -23,7 +23,7 @@ public class Category {
     private Long id;
     @Column(unique = true)
     private String name;
-    @OneToMany(cascade = CascadeType.MERGE, mappedBy = "category")
+    @OneToMany(mappedBy = "category")
     private Set<Product> products = new HashSet<>();
 
     @Override
@@ -32,13 +32,20 @@ public class Category {
         if (o == null || getClass() != o.getClass()) return false;
         Category category = (Category) o;
         return Objects.equals(id, category.id) &&
-                Objects.equals(name, category.name) &&
-                Objects.equals(products, category.products);
+                Objects.equals(name, category.name);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, name, products);
+        return Objects.hash(id, name);
+    }
+
+    @Override
+    public String toString() {
+        return "Category{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

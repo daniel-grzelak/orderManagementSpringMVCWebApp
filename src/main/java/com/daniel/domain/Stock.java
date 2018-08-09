@@ -19,11 +19,11 @@ public class Stock {
     @GeneratedValue
     private Long id;
     private Integer quantity;
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE})
-    @JoinColumn(name = "product_id", unique = true)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "product_id")
     private Product product;
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE})
-    @JoinColumn(name = "shop_id", unique = true)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "shop_id")
     private Shop shop;
 
     @Override
@@ -32,14 +32,20 @@ public class Stock {
         if (o == null || getClass() != o.getClass()) return false;
         Stock stock = (Stock) o;
         return Objects.equals(id, stock.id) &&
-                Objects.equals(quantity, stock.quantity) &&
-                Objects.equals(product, stock.product) &&
-                Objects.equals(shop, stock.shop);
+                Objects.equals(quantity, stock.quantity);
     }
 
     @Override
     public int hashCode() {
+        return Objects.hash(id, quantity);
+    }
 
-        return Objects.hash(id, quantity, product, shop);
+
+    @Override
+    public String toString() {
+        return "Stock{" +
+                "id=" + id +
+                ", quantity=" + quantity +
+                '}';
     }
 }

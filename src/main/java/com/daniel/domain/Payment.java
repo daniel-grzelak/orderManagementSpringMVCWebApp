@@ -24,8 +24,8 @@ public class Payment {
     @Column(unique = true)
     @Enumerated(EnumType.STRING)
     private EPayment payment;
-    @OneToMany(cascade = CascadeType.MERGE, mappedBy = "payment")
-    private Set<Customer_Order> customer_orders = new HashSet<>();
+    @OneToMany(mappedBy = "payment")
+    private Set<CustomerOrder> customer_orders = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {

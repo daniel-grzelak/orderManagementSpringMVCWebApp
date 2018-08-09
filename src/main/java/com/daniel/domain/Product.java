@@ -37,7 +37,7 @@ public class Product {
     @Column(name = "guarantee_component", unique = true)
     @Enumerated(EnumType.STRING)
     private List<EGuarantee> guarantee_components;
-    @OneToMany(cascade = CascadeType.MERGE, mappedBy = "product")
+    @OneToMany(mappedBy = "product")
     private Set<Stock> stocks = new HashSet<>();
 
     @Override
@@ -47,16 +47,21 @@ public class Product {
         Product product = (Product) o;
         return Objects.equals(id, product.id) &&
                 Objects.equals(name, product.name) &&
-                Objects.equals(price, product.price) &&
-                Objects.equals(category, product.category) &&
-                Objects.equals(producer, product.producer) &&
-                Objects.equals(guarantee_components, product.guarantee_components) &&
-                Objects.equals(stocks, product.stocks);
+                Objects.equals(price, product.price);
     }
 
     @Override
     public int hashCode() {
+        return Objects.hash(id, name, price);
+    }
 
-        return Objects.hash(id, name, price, category, producer, guarantee_components, stocks);
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                '}';
     }
 }
+

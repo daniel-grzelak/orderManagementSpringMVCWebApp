@@ -37,15 +37,21 @@ public class Country {
         if (o == null || getClass() != o.getClass()) return false;
         Country country = (Country) o;
         return Objects.equals(id, country.id) &&
-                Objects.equals(name, country.name) &&
-                Objects.equals(shops, country.shops) &&
-                Objects.equals(customers, country.customers) &&
-                Objects.equals(producers, country.producers);
+                Objects.equals(name, country.name);
+
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, name, shops, customers, producers);
+        return Objects.hash(id, name);
+    }
+
+    @Override
+    public String toString() {
+        return "Country{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

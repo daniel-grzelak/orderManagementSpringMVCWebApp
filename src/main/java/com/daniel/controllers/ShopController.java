@@ -1,9 +1,8 @@
 package com.daniel.controllers;
 
-import com.daniel.dao.interfaces.CountryDao;
-import com.daniel.dao.interfaces.ShopDao;
 import com.daniel.dto.CountryDto;
 import com.daniel.dto.ShopDto;
+import com.daniel.dto.StockDto;
 import com.daniel.exceptions.CustomException;
 import com.daniel.service.MyService;
 import org.springframework.stereotype.Controller;
@@ -17,13 +16,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class ShopController {
 
     private MyService myService;
-    private ShopDao shopDao;
-    private CountryDao countryDao;
 
     public ShopController(MyService myService) {
         this.myService = myService;
@@ -36,7 +34,11 @@ public class ShopController {
         m.addAttribute("shop", shopDto);
         List<CountryDto> countryList = myService.getAllCountries();
         m.addAttribute("countryList", countryList);
-
+        List<ShopDto> shopDtos = myService.getAllShops();
+        shopDtos
+                .forEach(s -> s.setStockDtos(myService.getAllStocksForShopDto(s).stream().map(id -> StockDto.builder().productDto(id.getProductDto()).quantity(id.getQuantity()).build())
+                        .collect(Collectors.toList())));
+        m.addAttribute("shopDtos", shopDtos);
         return "shop";
     }
 
@@ -60,6 +62,11 @@ public class ShopController {
         m.addAttribute("shop", shopDto);
         List<CountryDto> countryList = myService.getAllCountries();
         m.addAttribute("countryList", countryList);
+        List<ShopDto> shopDtos = myService.getAllShops();
+        shopDtos
+                .forEach(s -> s.setStockDtos(myService.getAllStocksForShopDto(s).stream().map(id -> StockDto.builder().productDto(id.getProductDto()).quantity(id.getQuantity()).build())
+                        .collect(Collectors.toList())));
+        m.addAttribute("shopDtos", shopDtos);
 
         return "shop";
     }

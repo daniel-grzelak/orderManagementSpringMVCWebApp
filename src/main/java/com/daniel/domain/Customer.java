@@ -29,7 +29,7 @@ public class Customer {
     @JoinColumn(name = "country_id")
     private Country country;
     @OneToMany(mappedBy = "customer")
-    private Set<Customer_Order> customer_orders = new HashSet<>();
+    private Set<CustomerOrder> customer_orders = new HashSet<>();
 
 
     @Override
@@ -40,13 +40,22 @@ public class Customer {
         return Objects.equals(id, customer.id) &&
                 Objects.equals(age, customer.age) &&
                 Objects.equals(name, customer.name) &&
-                Objects.equals(surname, customer.surname) &&
-                Objects.equals(country, customer.country);
+                Objects.equals(surname, customer.surname);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, age, name, surname, country);
+        return Objects.hash(id, age, name, surname);
+    }
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "id=" + id +
+                ", age=" + age +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                '}';
     }
 }

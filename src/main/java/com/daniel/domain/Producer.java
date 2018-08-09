@@ -37,15 +37,20 @@ public class Producer {
         if (o == null || getClass() != o.getClass()) return false;
         Producer producer = (Producer) o;
         return Objects.equals(id, producer.id) &&
-                Objects.equals(name, producer.name) &&
-                Objects.equals(country, producer.country) &&
-                Objects.equals(trade, producer.trade) &&
-                Objects.equals(products, producer.products);
+                Objects.equals(name, producer.name);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, name, country, trade, products);
+        return Objects.hash(id, name);
+    }
+
+    @Override
+    public String toString() {
+        return "Producer{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

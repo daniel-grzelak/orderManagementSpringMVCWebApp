@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Pattern;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -17,5 +18,5 @@ public class ShopDto {
     @Pattern(regexp = "[A-Z\\s]+", message = "Name must contain only big letters and spaces.")
     private String name;
     private CountryDto countryDto;
-
+    private List<StockDto> stockDtos;
 }

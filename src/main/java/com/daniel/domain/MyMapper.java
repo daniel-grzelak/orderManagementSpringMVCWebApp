@@ -86,8 +86,8 @@ public class MyMapper {
                 .build();
     }
 
-    public Customer_OrderDto fromCustomer_OrderToCustomer_OrderDto(Customer_Order customer_Order) {
-        return customer_Order == null ? null : Customer_OrderDto.builder()
+    public CustomerOrderDto fromCustomerOrderToCustomerOrderDto(CustomerOrder customer_Order) {
+        return customer_Order == null ? null : CustomerOrderDto.builder()
                 .id(customer_Order.getId())
                 .date(customer_Order.getDate())
                 .discount(customer_Order.getDiscount())
@@ -98,8 +98,8 @@ public class MyMapper {
                 .build();
     }
 
-    public Customer_Order fromCustomer_OrderDtoToCustomer_Order(Customer_OrderDto customer_OrderDto){
-        return customer_OrderDto == null ? null : Customer_Order.builder()
+    public CustomerOrder fromCustomerOrderDtoToCustomerOrder(CustomerOrderDto customer_OrderDto) {
+        return customer_OrderDto == null ? null : CustomerOrder.builder()
                 .id(customer_OrderDto.getId())
                 .date(customer_OrderDto.getDate())
                 .discount(customer_OrderDto.getDiscount())

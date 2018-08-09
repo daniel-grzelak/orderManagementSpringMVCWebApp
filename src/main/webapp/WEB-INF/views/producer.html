@@ -18,7 +18,7 @@
         <button class="tablinks" id="ShopTab">Shop</button>
     </form>
     <form action="/producer">
-        <button class="tablinks" id="ProducerTab">Producer</button>
+        <button class="tablinks active" id="ProducerTab">Producer</button>
     </form>
     <form action="/product">
         <button class="tablinks" id="ProductTab">Product</button>
@@ -33,48 +33,69 @@
 
 
 <div id="Producer" class="tabcontent">
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
+            <div class="col-md-7">
+                <div class="col-md-12 table">
+                    <input type="text" id="search" placeholder="Type to search">
+                    <h3>Table:</h3>
+                    <table class="table table-striped table-hover" id="table">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th onclick="sortTable(0)">Id</th>
+                            <th onclick="sortTable(1)">Name</th>
+                            <th onclick="sortTable(2)">Country</th>
+                            <th onclick="sortTable(3)">Trade</th>
+                            <th onclick="sortTable(3)">Product</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="p : ${producerDtos}">
+                            <td th:text="${p.id}"></td>
+                            <td th:text="${p.name}"></td>
+                            <td th:text="${p.countryDto.name}"></td>
+                            <td th:text="${p.tradeDto.name}"></td>
+                            <td>
+                                <ul>
+                                    <li th:each="product : ${p.productDtos}" th:text="|${product.name}|"></li>
+                                </ul>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
             <div class="col-md-4">
                 <div class="col-md-12 form">
                     <h3>Add producer:</h3>
                     <form th:action="@{/producer}" th:object="${producer}" method="post">
-                        <table>
-                            <tbody>
-                            <tr>
-                                <td>Name</td>
-                                <td><input type="text" th:field="*{name}"/></td>
-                            </tr>
-                            <tr>
-                                <select th:field="*{countryDto.id}" class="form-control" name="country"
-                                        id="producerCountry">
-                                    <option th:each="country : ${countryList}"
-                                            th:value="${country.id}"
-                                            th:text="${country.name}">
-                                    </option>
-                                </select>
-                            </tr>
-                            <tr>
-                                <select th:field="*{tradeDto.id}" class="form-control" name="trade"
-                                        id="producerTrade">
-                                    <option th:each="trade : ${tradeList}"
-                                            th:value="${trade.id}"
-                                            th:text="${trade.name}">
-                                    </option>
-                                </select>
-                            </tr>
-                            <td><input type="submit" value="SEND"/></td>
-                            <td><input type="reset" value="RESET"/></td>
-                            </tr>
-                            </tbody>
-                        </table>
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input id="name" class="form-control" type="text" th:field="*{name}"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="country">Country</label>
+                            <select th:field="*{countryDto.id}" id="country">
+                                <option th:each="country: ${countryList}"
+                                        th:value="${country.id}"
+                                        th:text="${country.name}">
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="trade">Trade</label>
+                            <select th:field="*{tradeDto.id}" id="trade">
+                                <option th:each="trade : ${tradeList}"
+                                        th:value="${trade.id}"
+                                        th:text="${trade.name}">
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <input class="btn btn-success" type="submit" value="SEND"/>
+                            <input class="btn btn-danger" type="reset" value="RESET"/>
+                        </div>
                     </form>
-                </div>
-            </div>
-            <div class="col-md-8">
-                <div class="col-md-12 table">
-                    <h3>Table:</h3>
-
                 </div>
             </div>
         </div>

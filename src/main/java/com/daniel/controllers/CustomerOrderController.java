@@ -2,8 +2,9 @@ package com.daniel.controllers;
 
 import com.daniel.domain.enums.EPayment;
 import com.daniel.dto.CustomerDto;
-import com.daniel.dto.Customer_OrderDto;
+import com.daniel.dto.CustomerOrderDto;
 import com.daniel.dto.ProductDto;
+import com.daniel.dto.StockDto;
 import com.daniel.exceptions.CustomException;
 import com.daniel.service.MyService;
 import org.springframework.stereotype.Controller;
@@ -30,19 +31,22 @@ public class CustomerOrderController {
 
     @RequestMapping(value = "/customerOrder", method = RequestMethod.GET)
     public String formGet(Model m) {
-        Customer_OrderDto customerOrderDto = new Customer_OrderDto();
+        CustomerOrderDto customerOrderDto = new CustomerOrderDto();
         m.addAttribute("customerOrder", customerOrderDto);
         List<CustomerDto> customerList = myService.getAllCustomers();
         m.addAttribute("customerList", customerList);
         List<ProductDto> productList = myService.getAllProducts();
         m.addAttribute("productList", productList);
         m.addAttribute("payments", EPayment.values());
-
+        List<CustomerOrderDto> customerOrderDtos = myService.getAllCustomerOrders();
+        m.addAttribute("customerOrderDtos", customerOrderDtos);
+        List<StockDto> stockDtos = myService.getAllStocks();
+        m.addAttribute("stockDtos", stockDtos);
         return "customerOrder";
     }
 
     @RequestMapping(value = "/customerOrder", method = RequestMethod.POST)
-    public String formPost(@Valid @ModelAttribute Customer_OrderDto customerOrder, BindingResult result, Model m, HttpServletRequest request) {
+    public String formPost(@Valid @ModelAttribute CustomerOrderDto customerOrder, BindingResult result, Model m, HttpServletRequest request) {
         if (result.hasErrors())
         {
 
@@ -57,14 +61,17 @@ public class CustomerOrderController {
 
         myService.addCustomerOrder(customerOrder);
 
-        Customer_OrderDto customerOrderDto = new Customer_OrderDto();
+        CustomerOrderDto customerOrderDto = new CustomerOrderDto();
         m.addAttribute("customerOrder", customerOrderDto);
         List<CustomerDto> customerList = myService.getAllCustomers();
         m.addAttribute("customerList", customerList);
         List<ProductDto> productList = myService.getAllProducts();
         m.addAttribute("productList", productList);
         m.addAttribute("payments", EPayment.values());
-
+        List<CustomerOrderDto> customerOrderDtos = myService.getAllCustomerOrders();
+        m.addAttribute("customerOrderDtos", customerOrderDtos);
+        List<StockDto> stockDtos = myService.getAllStocks();
+        m.addAttribute("stockDtos", stockDtos);
         return "customerOrder";
     }
 }

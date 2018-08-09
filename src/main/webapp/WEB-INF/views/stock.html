@@ -24,7 +24,7 @@
         <button class="tablinks" id="ProductTab">Product</button>
     </form>
     <form action="/stock">
-        <button class="tablinks" id="StockTab">Stock</button>
+        <button class="tablinks active" id="StockTab">Stock</button>
     </form>
     <form action="/customerOrder">
         <button class="tablinks" id="OrderTab">Customer order</button>
@@ -33,31 +33,55 @@
 
 
 <div id="Stock" class="tabcontent">
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
+            <div class="col-md-7">
+                <div class="col-md-12 table">
+                    <input type="text" id="search" placeholder="Type to search">
+                    <h3>Table:</h3>
+                    <table class="table table-striped table-hover" id="table">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th onclick="sortTable(0)">Id</th>
+                            <th onclick="sortTable(1)">Product name</th>
+                            <th onclick="sortTable(2)">Quantity</th>
+                            <th onclick="sortTable(3)">Shop</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="stock : ${stockDtos}">
+                            <td th:text="${stock.id}"></td>
+                            <td th:text="${stock.productDto.name}"></td>
+                            <td th:text="${stock.quantity}"></td>
+                            <td th:text="${stock.shopDto.getName() + ' ' + stock.shopDto.getCountryDto().name}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
             <div class="col-md-4">
                 <div class="col-md-12 form">
-                    <h3>Add Stock:</h3>
+                    <h3>Add stock:</h3>
                     <form th:action="@{/stock}" th:object="${stock}" method="post">
                         <div class="form-group">
                             <label for="quantity">Quantity</label>
-                            <input id="quantity" class="form-control" type="number" min="0" th:field="*{quantity}"/>
+                            <input id="quantity" class="form-control" type="number" min="1" th:field="*{quantity}"/>
                         </div>
                         <div class="form-group">
                             <label for="product">Product</label>
                             <select th:field="*{productDto.id}" id="product">
-                                <option th:each="product : ${productList}"
+                                <option th:each="product: ${productList}"
                                         th:value="${product.id}"
                                         th:text="${product.name}">
                                 </option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="Shop">Shop</label>
+                            <label for="shop">Shop</label>
                             <select th:field="*{shopDto.id}" id="shop">
                                 <option th:each="shop : ${shopList}"
                                         th:value="${shop.id}"
-                                        th:text="${shop.name + ' ' + shop.getCountryDto().getName()}">
+                                        th:text="${shop.name + ' ' + shop.getCountryDto().name}">
                                 </option>
                             </select>
                         </div>
@@ -66,12 +90,6 @@
                             <input class="btn btn-danger" type="reset" value="RESET"/>
                         </div>
                     </form>
-                </div>
-            </div>
-            <div class="col-md-8">
-                <div class="col-md-12 table">
-                    <h3>Table:</h3>
-
                 </div>
             </div>
         </div>

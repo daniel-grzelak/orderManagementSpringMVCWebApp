@@ -1,8 +1,5 @@
 package com.daniel.controllers;
 
-import com.daniel.dao.interfaces.CountryDao;
-import com.daniel.dao.interfaces.ProducerDao;
-import com.daniel.dao.interfaces.TradeDao;
 import com.daniel.dto.CountryDto;
 import com.daniel.dto.ProducerDto;
 import com.daniel.dto.TradeDto;
@@ -19,14 +16,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class ProducerController {
 
     private MyService myService;
-    private ProducerDao producerDao;
-    private CountryDao countryDao;
-    private TradeDao tradeDao;
 
 
     public ProducerController(MyService myService) {
@@ -42,8 +37,9 @@ public class ProducerController {
         m.addAttribute("countryList", countryList);
         List<TradeDto> tradeList = myService.getAllTrades();
         m.addAttribute("tradeList", tradeList);
-
-
+        List<ProducerDto> producerDtos = myService.getAllProducers();
+        producerDtos.forEach(p -> p.setProductDtos(myService.getAllProducts().stream().filter(pr -> pr.getProducerDto().getId().equals(p.getId())).collect(Collectors.toList())));
+        m.addAttribute("producerDtos", producerDtos);
         return "producer";
     }
 
@@ -69,6 +65,9 @@ public class ProducerController {
         m.addAttribute("countryList", countryList);
         List<TradeDto> tradeList = myService.getAllTrades();
         m.addAttribute("tradeList", tradeList);
+        List<ProducerDto> producerDtos = myService.getAllProducers();
+        producerDtos.forEach(p -> p.setProductDtos(myService.getAllProducts().stream().filter(pr -> pr.getProducerDto().getId().equals(p.getId())).collect(Collectors.toList())));
+        m.addAttribute("producerDtos", producerDtos);
         return "producer";
     }
 }

@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Customer_OrderDto {
+public class CustomerOrderDto {
 
 
     private Long id;
@@ -26,4 +26,5 @@ public class Customer_OrderDto {
     private CustomerDto customerDto;
     private PaymentDto paymentDto;
     private ProductDto productDto;
+    private StockDto stockDto;
 }

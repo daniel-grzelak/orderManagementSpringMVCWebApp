@@ -23,7 +23,7 @@ body {
 }
 
 .tab button:hover {
-    background-color: #0073aa;
+    background-color: #004f71;
 }
 
 .tab button.active {
@@ -84,4 +84,8 @@ tbody {
 
 .btn-danger {
     float: right;
+}
+
+.ul {
+    list-style-type: none;
 }

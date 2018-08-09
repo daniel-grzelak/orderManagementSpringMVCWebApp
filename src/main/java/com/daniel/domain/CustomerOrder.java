@@ -16,7 +16,7 @@ import java.util.Objects;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Customer_Order {
+public class CustomerOrder {
 
     @Id
     @GeneratedValue
@@ -24,11 +24,11 @@ public class Customer_Order {
     private LocalDateTime date;
     private BigDecimal discount;
     private Integer quantity;
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE})
-    @JoinColumn(name = "customer_id", unique = true)
+    @ManyToOne(cascade = {CascadeType.MERGE})
+    @JoinColumn(name = "customer_id")
     private Customer customer;
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    @JoinColumn(name = "payment_id", unique = true)
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinColumn(name = "payment_id")
     private Payment payment;
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE})
     @JoinColumn(name = "product_id")
@@ -38,19 +38,26 @@ public class Customer_Order {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Customer_Order that = (Customer_Order) o;
+        CustomerOrder that = (CustomerOrder) o;
         return Objects.equals(id, that.id) &&
                 Objects.equals(date, that.date) &&
                 Objects.equals(discount, that.discount) &&
-                Objects.equals(quantity, that.quantity) &&
-                Objects.equals(customer, that.customer) &&
-                Objects.equals(payment, that.payment) &&
-                Objects.equals(product, that.product);
+                Objects.equals(quantity, that.quantity);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, date, discount, quantity, customer, payment, product);
+        return Objects.hash(id, date, discount, quantity);
+    }
+
+    @Override
+    public String toString() {
+        return "CustomerOrder{" +
+                "id=" + id +
+                ", date=" + date +
+                ", discount=" + discount +
+                ", quantity=" + quantity +
+                '}';
     }
 }

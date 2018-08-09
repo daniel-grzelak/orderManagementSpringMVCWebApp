@@ -36,6 +36,8 @@ public class StockController {
         m.addAttribute("productList", productList);
         List<ShopDto> shopList = myService.getAllShops();
         m.addAttribute("shopList", shopList);
+        List<StockDto> stockDtos = myService.getAllStocks();
+        m.addAttribute("stockDtos", stockDtos);
         return "stock";
     }
 
@@ -61,7 +63,8 @@ public class StockController {
         m.addAttribute("productList", productList);
         List<ShopDto> shopList = myService.getAllShops();
         m.addAttribute("shopList", shopList);
-
+        List<StockDto> stockDtos = myService.getAllStocks();
+        m.addAttribute("stockDtos", stockDtos);
         return "stock";
     }
 }

@@ -2,10 +2,9 @@ package com.daniel.service;
 
 import com.daniel.dto.*;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
-@Transactional
+
 public interface MyService {
     List<CustomerDto> getAllCustomers();
     CustomerDto addCustomer(CustomerDto customerDto);
@@ -20,7 +19,13 @@ public interface MyService {
     List<CategoryDto> getAllCategories();
     List<ProductDto> getAllProducts();
     StockDto addStock(StockDto stockDto);
-    Customer_OrderDto addCustomerOrder(Customer_OrderDto customerOrderDto);
 
+    CustomerOrderDto addCustomerOrder(CustomerOrderDto customerOrderDto);
     List<StockDto> getAllStocks();
+
+    List<Long> getAllCustomerOrdersForCustomerDto(CustomerDto customerDto);
+
+    List<StockDto> getAllStocksForShopDto(ShopDto shopDto);
+
+    List<CustomerOrderDto> getAllCustomerOrders();
 }

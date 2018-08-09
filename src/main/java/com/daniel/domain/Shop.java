@@ -21,10 +21,10 @@ public class Shop {
     @GeneratedValue
     private Long id;
     private String name;
-    @ManyToOne(cascade = {CascadeType.MERGE})
+    @ManyToOne(cascade = {CascadeType.PERSIST})
     @JoinColumn(name = "country_id")
     private Country country;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "shop")
+    @OneToMany(mappedBy = "shop")
     private Set<Stock> stocks = new HashSet<>();
 
     @Override
@@ -33,14 +33,20 @@ public class Shop {
         if (o == null || getClass() != o.getClass()) return false;
         Shop shop = (Shop) o;
         return Objects.equals(id, shop.id) &&
-                Objects.equals(name, shop.name) &&
-                Objects.equals(country, shop.country) &&
-                Objects.equals(stocks, shop.stocks);
+                Objects.equals(name, shop.name);
     }
 
     @Override
     public int hashCode() {
+        return Objects.hash(id, name);
+    }
 
-        return Objects.hash(id, name, country, stocks);
+
+    @Override
+    public String toString() {
+        return "Shop{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 }
